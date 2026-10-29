@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Murmur – Chat, share and watch together</title>
+  <meta name="theme-color" content="#14c8a0" />
+  <meta name="application-name" content="Murmur" />
+  <meta name="description" content="Murmur: chat with friends, share posts and stories." />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Murmur" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/auth-flows.css" />
+  <link rel="stylesheet" href="css/splash.css" />
+  <link rel="stylesheet" href="css/legal.css" />
+  <link rel="stylesheet" href="css/app-layout.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div id="splash" role="status" aria-live="polite" aria-label="Loading Murmur">
+    <div class="splash-inner">
+      <span class="brand-mark splash-logo" aria-hidden="true"></span>
+      <div class="splash-name">Murmur</div>
+      <div class="splash-tag">Chat, share and watch together</div>
+      <div class="splash-bar" aria-hidden="true"><i></i></div>
+    </div>
+  </div>
+
+  <div id="auth" hidden>
+    <div class="app-shell">
+      <div class="auth-card">
+        <div class="brand">
+          <h1><span class="brand-mark" aria-hidden="true"></span>Murmur</h1>
+          <p>Murmur helps you chat, share and watch reels with the people in your life.</p>
+        </div>
+
+        <div class="panel">
+          <div class="form" id="authForm">
+            <div class="field">
+              <label for="email">Email Address</label>
+              <input id="email" type="email" autocomplete="username" placeholder="you@example.com" />
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
+            </div>
+            <div class="error" id="authError"></div>
+            <label class="checkbox-row"><input type="checkbox" id="rememberMe" checked /><span>Remember me</span></label>
+            <button class="btn primary" id="loginBtn" type="button">Log in</button>
+            <button class="btn secondary" id="createBtn" type="button">Create new account</button>
+            <button class="btn ghost" id="demoBtn" type="button">Try the demo</button>
+            <div class="tiny"><button id="resetBtn" type="button">Forgot password?</button></div>
+            <div class="tiny legal-links"><a href="#terms">Terms</a> · <a href="#privacy">Privacy Policy</a> · <a href="#cookies">Cookie Policy</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app" hidden>
+    <div class="fb-head">
+      <div class="demo-bar" id="demoBar" hidden><span>Demo mode: sample data, nothing is saved.</span><button type="button" id="demoExit">Exit demo</button></div>
+      <header class="topbar">
+        <div class="fb-logo">Murmur</div>
+        <div class="fb-actions">
+          <button type="button" id="hdrAdd" aria-label="New post"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button type="button" id="hdrSearch" aria-label="Find friends"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+        </div>
+      </header>
+      <nav class="nav fb-nav" aria-label="Main navigation">
+        <button class="active" data-view="home" type="button" aria-label="Home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></button>
+        <button data-view="friends" type="button" aria-label="Friends"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.6"/><path d="M17 14c2.8 0 4.7 1.8 4.7 4.5"/></svg><span class="badge" id="friendsBadge" hidden></span></button>
+        <button data-view="chats" type="button" aria-label="Messages"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.8 3 3 6.5 3 11c0 2.4 1.1 4.5 2.9 6L5 21l4-2c.9.3 2 .4 3 .4 5.2 0 9-3.4 9-8S17.200 3 12 3z"/></svg></button>
+        <button data-view="alerts" type="button" aria-label="Alerts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17v-6a6 6 0 0 1 12 0v6l2 2H4z"/><path d="M10 21h4"/></svg><span class="badge" id="alertsBadge" hidden></span></button>
+        <button data-view="menu" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      </nav>
+    </div>
+
+    <main id="main-content" class="main">
+      <section class="pane active" data-pane="home">
+        <div id="announceBox"></div>
+        <div class="tip" id="verifyBanner" hidden></div>
+        <div id="storiesRow" class="stories"></div>
+        <div class="composer">
+          <div class="avatar" id="composerAvatar">MC</div>
+          <input id="postInput" type="text" maxlength="200" placeholder="What’s on your mind?" />
+          <button class="btn primary" id="postBtn" type="button">Post</button>
+        </div>
+        <div class="posts" id="posts"></div>
+      </section>
+
+      <section class="pane" data-pane="friends">
+        <div class="card" id="reqCard" hidden><h2 style="margin:0 0 4px">Friend requests</h2><div id="reqList" class="friends-list"></div></div>
+        <div class="card">
+          <h2 style="margin:0 0 12px">Find friends</h2>
+          <div class="composer" style="grid-template-columns:1fr auto;box-shadow:none;border:0;padding:0;background:none">
+            <input id="friendSearch" type="text" placeholder="Search by username, e.g. @jian123" maxlength="30" />
+            <button class="btn primary" id="friendSearchBtn" type="button">Search</button>
+          </div>
+          <div id="searchResults" class="friends-list"></div>
+        </div>
+        <div class="card" style="margin-top:14px"><h2 style="margin:0 0 4px">Friends</h2><div id="friendsList" class="friends-list"></div></div>
+        <div class="card" style="margin-top:14px" id="sentCard" hidden><h2 style="margin:0 0 4px">Sent requests</h2><div id="sentList" class="friends-list"></div></div>
+      </section>
+
+      <section class="pane" data-pane="chats">
+        <div class="chat-layout">
+          <aside class="sidebar">
+            <div class="sidebar-header">Chats</div>
+            <div class="search"><input id="chatSearch" type="text" placeholder="Search people" /></div>
+            <div id="activeRow" class="active-row" hidden></div>
+            <div id="chatList" class="chat-list"></div>
+          </aside>
+
+          <div class="conversation">
+            <div class="conversation-header">
+              <button class="chat-back" id="chatBack" type="button" aria-label="Back to chats">←</button>
+              <div class="meta">
+                <div class="avatar" id="chatAvatar">A</div>
+                <div>
+                  <strong id="chatName">Ava</strong><br />
+                  <small id="chatStatus">online</small>
+                </div>
+              </div>
+              <button class="btn ghost" type="button" id="chatProfileBtn">Profile</button>
+            </div>
+            <div class="messages" id="messages"></div>
+            <div class="composer-chat">
+              <input id="messageInput" type="text" placeholder="Write a message" maxlength="300" />
+              <button class="btn primary" id="sendBtn" type="button">Send</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane" data-pane="alerts">
+        <div class="alerts-list" id="alertsList"></div>
+      </section>
+      <section class="pane" data-pane="menu">
+        <div class="menu-me"><div class="avatar" id="menuAvatar">?</div><div><strong id="menuName">Your name</strong><br /><small id="menuUser">@username</small></div></div>
+        <div class="menu-grid">
+          <button class="menu-item" data-view="friends" type="button"><span>👥</span>Friends</button>
+          <button class="menu-item" data-view="chats" type="button"><span>💬</span>Messages</button>
+          <button class="menu-item" data-view="alerts" type="button"><span>🔔</span>Alerts</button>
+          <a class="menu-item" href="#privacy"><span>🔒</span>Privacy Policy</a>
+          <a class="menu-item" href="#terms"><span>📄</span>Terms</a>
+          <a class="menu-item" href="#cookies"><span>🍪</span>Cookies</a>
+        </div>
+        <button class="menu-row" id="themeBtn" type="button">🌙 Dark mode</button>
+        <button class="menu-row" id="deleteAccountBtn" type="button">Delete account</button>
+        <button class="menu-row" id="logoutBtn" type="button">Log out</button>
+      </section>
+      <footer class="legal-links"><a href="#terms">Terms</a> · <a href="#privacy">Privacy Policy</a> · <a href="#cookies">Cookie Policy</a> · © Murmur</footer>
+    </main>
+  </div>
+
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

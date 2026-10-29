@@ -1,0 +1,16 @@
+{
+  "name": "Murmur",
+  "short_name": "Murmur",
+  "display": "standalone",
+  "start_url": "./",
+  "background_color": "#eef3f8",
+  "theme_color": "#14c8a0",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
